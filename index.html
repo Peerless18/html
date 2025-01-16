@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecurePass - Password Manager</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .nav-links a {
+            margin-left: 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+
+        /* Main content styles */
+        main {
+            padding: 2rem 0;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .search-bar {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .search-bar input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
+        .search-bar button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">SecurePass</a>
+            <div class="nav-links">
+                <a href="#">Dashboard</a>
+                <a href="#">Generator</a>
+                <a href="#">Login</a>
+                <a href="#">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Password Dashboard</h1>
+
+        <div class="card">
+            <h2>Your Passwords</h2>
+            <div class="search-bar">
+                <input type="text" placeholder="Search passwords...">
+                <button>Search</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Website</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Strength</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="https://www.google.com/s2/favicons?domain=example.com" alt="Example favicon" width="16" height="16">
+                            example.com
+                        </td>
+                        <td>user@example.com</td>
+                        <td>••••••••</td>
+                        <td>Strong</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="https://www.google.com/s2/favicons?domain=anothersite.com" alt="Another Site favicon" width="16" height="16">
+                            anothersite.com
+                        </td>
+                        <td>johndoe</td>
+                        <td>••••••••</td>
+                        <td>Moderate</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+            <a href="#" class="button">Add New Password</a>
+        </div>
+
+        <div class="card">
+            <h2>Password Analysis</h2>
+            <p>2 out of 2 passwords are strong.</p>
+            <h3>Strength Distribution</h3>
+            <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+                <div style="flex: 1; text-align: center;">
+                    <div style="background-color: #007bff; height: 100px;"></div>
+                    <p>Strong</p>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="background-color: #007bff; height: 50px;"></div>
+                    <p>Moderate</p>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="background-color: #007bff; height: 0;"></div>
+                    <p>Weak</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

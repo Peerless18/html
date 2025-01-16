@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecurePass - Password Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .nav-links a {
+            margin-left: 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+
+        /* Main content styles */
+        main {
+            padding: 2rem 0;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .search-bar {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .search-bar input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
+        .search-bar button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="url"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .password-input {
+            position: relative;
+        }
+        .password-input .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">SecurePass</a>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="generator.html">Generator</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Password Dashboard</h1>
+
+        <div class="card">
+            <h2>Add New Password</h2>
+            <form id="password-form">
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" id="website" name="website" required placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="johndoe@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility()"></i>
+                    </div>
+                </div>
+                <button type="submit" class="button">Save Password</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Your Passwords</h2>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search passwords...">
+                <button onclick="searchPasswords()">Search</button>
+            </div>
+            <table id="password-table">
+                <thead>
+                    <tr>
+                        <th>Website</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Password entries will be added here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        // Initialize passwords array
+        let passwords = JSON.parse(localStorage.getItem('passwords')) || [];
+
+        // Function to render passwords
+        function renderPasswords() {
+            const tableBody = document.querySelector('#password-table tbody');
+            tableBody.innerHTML = '';
+            passwords.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <img src="https://www.google.com/s2/favicons?domain=${entry.website}" alt="${entry.website} favicon" width="16" height="16">
+                        ${entry.website}
+                    </td>
+                    <td>${entry.username}</td>
+                    <td>
+                        <span class="password-text">••••••••</span>
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility(${index})"></i>
+                    </td>
+                    <td>
+                        <button class="button" onclick="deletePassword(${index})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to add a new password
+        document.getElementById('password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const website = document.getElementById('website').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            passwords.push({ website, username, password });
+            localStorage.setItem('passwords', JSON.stringify(passwords));
+            renderPasswords();
+            this.reset();
+        });
+
+        // Function to toggle password visibility
+        function togglePasswordVisibility(index) {
+            const passwordSpan = document.querySelectorAll('.password-text')[index];
+            const toggleIcon = document.querySelectorAll('.toggle-password')[index + 1]; // +1 because the first toggle is in the form
+            if (passwordSpan.textContent === '••••••••') {
+                passwordSpan.textContent = passwords[index].password;
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordSpan.textContent = '••••••••';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Function to delete a password
+        function deletePassword(index) {
+            passwords.splice(index, 1);
+            localStorage.setItem('passwords', JSON.stringify(passwords));
+            renderPasswords();
+        }
+
+        // Function to search passwords
+        function searchPasswords() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filteredPasswords = passwords.filter(entry => 
+                entry.website.toLowerCase().includes(searchTerm) || 
+                entry.username.toLowerCase().includes(searchTerm)
+            );
+            renderFilteredPasswords(filteredPasswords);
+        }
+
+        // Function to render filtered passwords
+        function renderFilteredPasswords(filteredPasswords) {
+            const tableBody = document.querySelector('#password-table tbody');
+            tableBody.innerHTML = '';
+            filteredPasswords.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <img src="https://www.google.com/s2/favicons?domain=${entry.website}" alt="${entry.website} favicon" width="16" height="16">
+                        ${entry.website}
+                    </td>
+                    <td>${entry.username}</td>
+                    <td>
+                        <span class="password-text">••••••••</span>
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility(${index})"></i>
+                    </td>
+                    <td>
+                        <button class="button" onclick="deletePassword(${passwords.indexOf(entry)})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Initial render
+        renderPasswords();
+    </script>
+</body>
+</html>
